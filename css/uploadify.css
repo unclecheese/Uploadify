@@ -1,0 +1,95 @@
+/*
+Uploadify v2.1.0
+Release Date: August 24, 2009
+
+Copyright (c) 2009 Ronnie Garcia, Travis Nickels
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+.uploadifyQueueItem, .uploadifyFile { font:11px Verdana,Geneva,sans-serif; border:2px solid #e5e5e5; background-color:#f5f5f5; margin-top:5px; padding:10px; line-height:1.3; }
+.uploadifyError { border:2px solid #fbcbbc !important; background-color:#fde5dd !important; }
+.uploadifyQueueItem .cancel {	float:right; }
+.uploadifyProgress { background-color:#fff; border:1px solid #808080; border-right:1px solid #c5c5c5;	border-bottom:1px solid #c5c5c5; margin-top:10px; width:100%; }
+.uploadifyProgressBar { background-color:#0099ff;	width:1px; height:3px; }
+.UploadifyField {  }
+.UploadifyField.backend { width:600px;padding:0; }
+	.UploadifyField.backend .middleColumn {border:1px solid #aaa;width:auto; !important;padding:8px !important;width:auto !important;}
+
+	.uploadifyfield_queue_actions { padding-top:10px; }
+        .upload_previews ul {padding-left:0;}
+	.upload_previews ul, .upload_previews ul li { list-style:none; margin:0; }
+	.file_heading {margin:5px 0;padding:4px;border-bottom:1px solid #c5c5c5;}
+	.backend .file_heading {font-size:12px;}
+        .upload_previews ul li.uploadifyFile { position:relative;height:32px; }
+                .upload_previews ul li.uploadifyFile div.image {width:50px;float:left;}
+		.upload_previews ul li.uploadifyFile div.filename { padding-right:40px;height:32px;line-height:32px; }
+		.upload_previews ul li.uploadifyFile div.delete { position:absolute; top:10px; right:10px; width:40px; text-align:right; }
+
+.backend .uploadifyfield_queue {max-height:150px;overflow:auto;}		
+/* clearfix */
+.clearfix:after, .clr:after { content:" "; display:block; height:0; clear:both; visibility:hidden; font-size:0; }
+* html .clearfix, * html .clr { zoom:1; } /* ie6 */
+*:first-child+html .clearfix, *:first-child+html .clr { zoom:1; } /* ie7 */
+
+
+.UploadifyField .button_wrapper { position:relative;min-height:20px; }
+
+/* fake button */
+.UploadifyField .button_wrapper a {position:absolute; top:0; left:0; z-index:0; display:block; float:left; padding:4px 6px; background:#666; color:#fff; text-decoration:none; font-size:12px;-moz-border-radius:5px; }
+
+/* pass hover effects to button */
+.UploadifyField .button_wrapper:hover a {background:#777; color:white;}
+
+/* position flash button above css button */
+.UploadifyField .object_wrapper {position:relative; z-index:10; }
+
+div.tabNavigation { padding:5px 0 0 0; background:transparent;width:601px; }
+div.tabNavigation label {font-size:14px !important;display:block;padding-top:0px;float:left;}
+div.tabNavigation ul.navigation, #tabs ul.navigation li { margin:0; list-style:none;}
+div.tabNavigation ul.navigation { background:transparent; padding:0;}
+div.tabNavigation ul.navigation li { float:right; margin:0 0 -1px 0; font-size:12px; }
+div.tabNavigation ul.navigation li a { text-decoration:none; outline:0; display:block; float:left; padding:3px 10px; background:#aaa; margin:0 1px; color:#fff; border:1px solid #aaa; }
+div.tabNavigation ul.navigation li a:hover { background:#bbb; text-decoration:none; }
+div.tabNavigation ul.navigation li a.selected { background:#e9e9e9; color:#777; border-color:#aaa; border-bottom-color:#e9e9e9; }
+.horizontal_tabs {padding-top:0px;margin-top:-3px;}
+.horizontal_tab {min-height:40px;}
+
+.upload_previews ul.sortable li {cursor:move;}
+.backend .upload_previews {max-height:150px;overflow:auto;}
+
+.import_dropdown button {display:none;}
+.import_dropdown .middleColumn {border:0 !important;margin:0 !important;padding:0 !important;}
+.import_list {padding:10px 20px;border-top:1px solid #ccc;margin:10px 0;border-bottom: 1px solid #ccc;padding-bottom:6px;}
+.import_list.loading {background:url(../images/ajax-loader.gif) center no-repeat;}
+.import_list li {margin:4px 0;border-bottom:1px solid #ccc;float:left;width:48%;height:4em;list-style:none;}
+.import_list li.odd {border-right:1px solid #ccc;}
+.import_list li.even {padding-left:6px;}
+.import_list li.disabled label {color:#aaa;}
+.import_list input, .import_list label {vertical-align:100%;}
+.import_message {display:none; background:#dff2bf;padding:4px;}
+
+.current_folder {margin:8px 0;}
+.clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}
+.clearfix {display: inline-block;}
+
+.attached_files_wrap {margin-top:6px;}
+
+.folder_select_wrap {margin-top:8px;}
+.folder_select_wrap h5 {color:#666;font-weight:normal;border-top:1px solid #c5c5c5;padding-top:4px;margin:0;}
