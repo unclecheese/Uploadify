@@ -191,7 +191,7 @@ abstract class UploadifyField extends FormField
 		parent::__construct($name, $title, null, $form);
 		// A little hack to make things easier in the CMS
 		$controller = Director::urlParam('Controller');
-		if(is_subclass_of($controller,"LeftAndMain")) {
+		if(is_subclass_of($controller,"LeftAndMain") || is_subclass_of($controller,"ModelAdmin_CollectionController") || $controller == "ModelAdmin_CollectionController" || is_subclass_of($controller,"ModelAdmin_RecordController") || $controller == "ModelAdmin_RecordController") {
 			self::$backend = true;
 		}
 
