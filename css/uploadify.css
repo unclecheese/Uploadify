@@ -40,7 +40,9 @@ THE SOFTWARE.
         .upload_previews ul li.uploadifyFile { position:relative;height:32px; }
                 .upload_previews ul li.uploadifyFile div.image {width:50px;float:left;}
 		.upload_previews ul li.uploadifyFile div.filename { padding-right:40px;height:32px;line-height:32px; }
-		.upload_previews ul li.uploadifyFile div.delete { position:absolute; top:10px; right:10px; width:40px; text-align:right; }
+		.upload_previews ul li.uploadifyFile div.delete { position:absolute; top:10px; right:10px; width:160px; text-align:right; }
+			.upload_previews ul li.uploadifyFile div.delete a {text-transform:uppercase;background:#aaa;text-decoration:none;color:#fff;padding:4px;font-size:9px;}
+			.upload_previews ul li.uploadifyFile div.delete a.delete {background:#red;}
 
 .backend .uploadifyfield_queue {max-height:150px;overflow:auto;}		
 /* clearfix */

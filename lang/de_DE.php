@@ -18,3 +18,5 @@ $lang['de_DE']['Uploadify']['NOFILESFOUND'] = 'Es konnten keine Dateien gefunden
 $lang['de_DE']['Uploadify']['CHOOSEEXISTING'] = 'Bestehende Datei wählen';
 $lang['de_DE']['Uploadify']['UPLOADNEW'] = 'Upload';
 $lang['de_DE']['Uploadify']['DOIMPORT'] = 'Importieren';
+$lang['da_DK']['Uploadify']['DETATCH'] = 'trennen';
+$lang['da_DK']['Uploadify']['DELETEPERMANENTLY'] = 'löschen dauerhaft';

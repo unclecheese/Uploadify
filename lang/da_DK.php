@@ -18,3 +18,5 @@ $lang['da_DK']['Uploadify']['NOFILESFOUND'] = 'Der blev ikke fundet nogen filer'
 $lang['da_DK']['Uploadify']['CHOOSEEXISTING'] = 'Vælg eksisterende';
 $lang['da_DK']['Uploadify']['UPLOADNEW'] = 'Upload';
 $lang['da_DK']['Uploadify']['DOIMPORT'] = 'Importer';
+$lang['da_DK']['Uploadify']['DETATCH'] = 'løsne';
+$lang['da_DK']['Uploadify']['DELETEPERMANENTLY'] = 'slette permanent';
