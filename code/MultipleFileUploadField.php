@@ -21,7 +21,8 @@ class MultipleFileUploadField extends UploadifyField
 	 * @var array Overrides the "multi" setting
 	 */
 	static $defaults = array (
-		'multi' => true
+		'multi' => true,
+		'deleteEnabled' => false
 	);
 
 	
@@ -65,7 +66,7 @@ class MultipleFileUploadField extends UploadifyField
 	public function importlist(SS_HTTPRequest $request) {
 		if($id = $request->requestVar('FolderID')) {
 			if(is_numeric($id)) {
-				$files = DataObject::get("File", "ParentID = $id AND ClassName != 'Folder'");
+				$files = DataObject::get("File", "\"ParentID\" = $id AND \"ClassName\" != 'Folder'");
 				if($files && $this->form) {
 					if($record = $this->form->getRecord()) {
 						if($relation_name = $this->getForeignRelationName($record)) {
@@ -115,20 +116,17 @@ class MultipleFileUploadField extends UploadifyField
 	 * @return null
 	 */
 	public function removefile() {
-		if($form = $this->form) {
-			if($rec = $form->getRecord()) {
-				if($key = $this->getForeignRelationName($rec)) {
-					if(isset($_REQUEST['FileID'])) {
-						if($file_class = $rec->has_many($this->name)) {
-							if($file = DataObject::get_by_id($file_class, (int) $_REQUEST['FileID'])) {
-								$file->{$key} = 0;
-								$file->write();
-								return;
-							}
-						}
-					}
-				}
-			}
+		if((isset($_REQUEST['FileID']))
+			&& ($form = $this->form)
+			&& ($rec = $form->getRecord())
+			&& ($key = $this->getForeignRelationName($rec))
+			&& ($file_class = $this->getFileClass($rec))
+			&& ($file = DataObject::get_by_id($file_class, (int) $_REQUEST['FileID']))) {
+				
+				$currentComponentSet = $rec->{$this->name}();
+				$currentComponentSet->remove($file);
+				$currentComponentSet->write();
+			return;
 		}
 	}
 	
@@ -160,7 +158,7 @@ class MultipleFileUploadField extends UploadifyField
 			if(is_array($val)) {
 				$list = implode(',', $val);
 				$class = $this->baseFileClass;
-				if($files = DataObject::get($class, "`{$class}`.ID IN (".Convert::raw2sql($list).")")) {
+				if($files = DataObject::get($class, "\"{$class}\".\"ID\" IN (".Convert::raw2sql($list).")")) {
 					$ret = new DataObjectSet();
 					foreach($files as $file) {
 						if(is_subclass_of($file->ClassName, "Image") || $file->ClassName == "Image") {
@@ -204,39 +202,56 @@ class MultipleFileUploadField extends UploadifyField
 		if(!$record->isInDB()) {
 			$record->write();
 		}
-		if(!$file_class = $record->has_many($this->name)) {
+		if(!$file_class = $this->getFileClass($record)) {
 			return false;
 		}
 		if(isset($_REQUEST[$this->name]) && is_array($_REQUEST[$this->name])) {
 			if($relation_name = $this->getForeignRelationName($record)) {
 				// Null out all the existing relations and reset.
-				if($current = $record->{$this->name}()) {
-					foreach($current as $rec) {
-						$rec->$relation_name = 0;
-						$rec->write();
-					}
-				}
+				$currentComponentSet = $record->{$this->name}();
+				$currentComponentSet->removeAll();
 				// Assign all the new relations (may have already existed)
 				foreach($_REQUEST[$this->name] as $id) {
 					if($file = DataObject::get_by_id($this->baseFileClass, $id)) {
 						$new = ($file_class != $this->baseFileClass) ? $file->newClassInstance($file_class) : $file;
-						$new->$relation_name = $record->ID;
 						$new->write();
+						$currentComponentSet->add($new);
 					}
 				}
 			}
 		}		
 	}
 	
+	/**
+	 * Returns file class for the $record for field $this->name if has_many or many_many
+	 * 
+	 * @param 	DataObject $record 	The record to search
+	 * @return 	string|boolean		File class or false
+	 */
+	public function getFileClass (DataObject $record) {
+		if(!$file_class = $record->has_many($this->name)) {
+			if (!$many_class = $record->many_many($this->name)) {
+				return false;
+			}
+			// set child class. 
+			$file_class = $many_class[1];
+		}
+		return $file_class;
+	}
 	
 	/**
-	 * Gets the foreign key from the child File class that relates to the $has_many on the parent record
+	 * Gets the foreign key from the child File class that relates to the $has_many or $many_many
+	 * on the parent record
 	 *
 	 * @param DataObject $record The record to search
 	 * @return string
 	 */
 	public function getForeignRelationName(DataObject $record) {
-		if($file_class = $record->has_many($this->name)) {
+		
+		if ($many_info = $record->many_many($this->name)) {
+			// return parent field
+			return $many_info[2];
+		} elseif ($file_class = $record->has_many($this->name)) {
 			$class = $record->class;
 			$relation_name = false;
 			while($class != "DataObject") {
@@ -246,7 +261,7 @@ class MultipleFileUploadField extends UploadifyField
 				$class = get_parent_class($class);					
 			}
 			if(!$relation_name) {
-				user_error("Could not find has_one relation ship on $file_class", E_USER_ERROR);
+				user_error("Could not find has_one or belongs many_many relation ship on $file_class", E_USER_ERROR);
 			}
 
 			return $relation_name .= "ID";

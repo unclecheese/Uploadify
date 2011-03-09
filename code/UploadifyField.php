@@ -350,7 +350,7 @@ abstract class UploadifyField extends FormField
 	public function importlist(SS_HTTPRequest $request) {
 		if($id = $request->requestVar('FolderID')) {
 			if(is_numeric($id)) {
-				$files = DataObject::get("File", "ParentID = $id AND ClassName != 'Folder'");
+				$files = DataObject::get("File", "\"ParentID\" = $id AND \"ClassName\" != 'Folder'");
 				return $this->customise(array(
 					'Files' => $files
 				))->renderWith('ImportList');
@@ -484,6 +484,14 @@ abstract class UploadifyField extends FormField
 		return $this->getSetting('multi');
 	}
 
+	/**
+	 * A quick template accessor to determine if delete link is enabled
+	 *
+	 * @return boolean
+	 */
+	public function DeleteEnabled() {
+		return $this->getSetting('deleteEnabled');
+	}
 
 	/**
 	 * A template accessor to determine if we're in the backend.
