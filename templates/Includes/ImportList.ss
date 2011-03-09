@@ -1,6 +1,6 @@
 <% if Files %>
 	<% if Multi %>
-		<ul>
+		<ul class="columns_{$ColumnCount}">
 			<% control Files %>
 				<li class="$EvenOdd <% if Disabled %>disabled<% end_if %>"><input <% if Disabled %>disabled="disabled"<% end_if %> type="checkbox" value="$ID" name="ImportFiles[]" id="import-input-$ID" /> 
 				<% if Height %>$CroppedImage(32,32)<% else %><img src="$Icon" height="32"/><% end_if %>
@@ -8,7 +8,7 @@
 			<% end_control %>
 		</ul>
 	<% else %>
-		<ul>
+		<ul class="columns_{$ColumnCount}">
 			<% control Files %>
 				<li class="$EvenOdd"><input type="radio" value="$ID" name="ImportFileID" id="import-input-$ID" /> 
 				<% if Height %>$CroppedImage(32,32)<% else %><img src="$Icon" height="32"/><% end_if %>

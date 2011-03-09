@@ -98,6 +98,11 @@ abstract class UploadifyField extends FormField
 	 */
 	public $allowImport = true;
 	
+	
+	public $columnCount = 2;
+	
+	public $allowDelete = true;
+	
 
 	/**
 	 * @var string The default upload folder
@@ -254,6 +259,14 @@ abstract class UploadifyField extends FormField
 		$this->uploadFolder = $dir;
 	}
 	
+	public function setDeleteEnabled($bool = true) {
+		$this->allowDelete = $bool;
+	}
+	
+	public function setColumnCount($count) {
+		$this->columnCount = $count;
+	}
+	
 	public function getUploadFolder() {
 		if($this->uploadFolder) {
 			return self::relative_asset_dir($this->uploadFolder);
@@ -366,6 +379,11 @@ abstract class UploadifyField extends FormField
 	 */
 	public function CanSelectFolder() {
 		return $this->allowFolderSelection;
+	}
+	
+	
+	public function ColumnCount() {
+		return $this->columnCount;
 	}
 	
 
@@ -490,7 +508,7 @@ abstract class UploadifyField extends FormField
 	 * @return boolean
 	 */
 	public function DeleteEnabled() {
-		return $this->getSetting('deleteEnabled');
+		return $this->allowDelete;
 	}
 
 	/**
