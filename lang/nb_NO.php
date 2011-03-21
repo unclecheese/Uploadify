@@ -19,5 +19,5 @@ $lang['nb_NO']['Uploadify']['NOFILESFOUND'] = 'Det finnes ingen filer i den mapp
 $lang['nb_NO']['Uploadify']['CHOOSEEXISTING'] = 'Velg eksisterende';
 $lang['nb_NO']['Uploadify']['UPLOADNEW'] = 'Last opp ny';
 $lang['nb_NO']['Uploadify']['DOIMPORT'] = 'Importer';
-$lang['da_DK']['Uploadify']['DETACH'] = 'losmaken';
-$lang['da_DK']['Uploadify']['DELETEPERMANENTLY'] = 'verwijderen permanent';
+$lang['nb_NO']['Uploadify']['DETACH'] = 'losmaken';
+$lang['nb_NO']['Uploadify']['DELETEPERMANENTLY'] = 'verwijderen permanent';
