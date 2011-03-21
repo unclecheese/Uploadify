@@ -1,5 +1,12 @@
 <% if Files %>
 	<% if Multi %>
+		<div class="import_input_select">
+			<span><% _t('Uploadify.SELECT','Select') %>:
+				<a class="import_input_select_all" onclick="jQuery.fn.uploadifyImportCheckboxToggle(true);"><% _t('Uploadify.ALL','all') %></a> /
+				<a class="import_input_select_none" onclick="jQuery.fn.uploadifyImportCheckboxToggle(false);"><% _t('Uploadify.NONE','none') %></a> / 
+				<a class="import_input_select_toggle" onclick="jQuery.fn.uploadifyImportCheckboxToggle('toggle');"><% _t('Uploadify.TOGGLE','toggle') %></a>
+			</span>
+		</div>
 		<ul class="columns_{$ColumnCount}">
 			<% control Files %>
 				<li class="$EvenOdd <% if Disabled %>disabled<% end_if %>"><input <% if Disabled %>disabled="disabled"<% end_if %> type="checkbox" value="$ID" name="ImportFiles[]" id="import-input-$ID" /> 

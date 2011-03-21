@@ -92,6 +92,7 @@ div.tabNavigation ul.navigation li a.selected { background:#e9e9e9; color:#777; 
 .import_list li.disabled label {color:#aaa;}
 .import_list input, .import_list label {vertical-align:100%;}
 .import_message {display:none; background:#dff2bf;padding:4px;}
+.import_input_select a {cursor:pointer;}
 
 .current_folder {margin:8px 0;}
 .clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}

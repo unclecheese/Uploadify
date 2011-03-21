@@ -20,3 +20,7 @@ $lang['de_DE']['Uploadify']['UPLOADNEW'] = 'Upload';
 $lang['de_DE']['Uploadify']['DOIMPORT'] = 'Importieren';
 $lang['da_DK']['Uploadify']['DETATCH'] = 'trennen';
 $lang['da_DK']['Uploadify']['DELETEPERMANENTLY'] = 'löschen dauerhaft';
+$lang['de_DE']['Uploadify']['SELECT'] = 'Auswahl';
+$lang['de_DE']['Uploadify']['ALL'] = 'alle';
+$lang['de_DE']['Uploadify']['NONE'] = 'keine';
+$lang['de_DE']['Uploadify']['TOGGLE'] = 'umkehren';

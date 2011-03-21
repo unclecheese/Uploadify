@@ -291,6 +291,15 @@ if(jQuery)(
 			jQuery(this).each(function() {
 				document.getElementById(jQuery(this).attr('id') + 'Uploader').clearFileUploadQueue(false);
 			});
+		},
+		uploadifyImportCheckboxToggle:function(val) {
+			jQuery('input[name="ImportFiles[]"]').each(function(idx){
+				if(val == 'toggle') {
+					jQuery(this).attr('checked',!(jQuery(this).attr('checked')));
+				} else {
+					jQuery(this).attr('checked',(val));
+				}
+			});
 		}
 	})
 })(jQuery);
