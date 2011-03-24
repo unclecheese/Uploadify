@@ -66,7 +66,7 @@ class MultipleFileUploadField extends UploadifyField
 	public function importlist(SS_HTTPRequest $request) {
 		if($id = $request->requestVar('FolderID')) {
 			if(is_numeric($id)) {
-				$files = DataObject::get("File", "\"ParentID\" = $id AND \"ClassName\" != 'Folder'");
+				$files = DataObject::get("File", "\"ParentID\" = $id AND \"File\".\"ClassName\" != 'Folder'");
 				if($files && $this->form) {
 					if($record = $this->form->getRecord()) {
 						if($relation_name = $this->getForeignRelationName($record)) {
