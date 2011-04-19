@@ -433,11 +433,11 @@ abstract class UploadifyField extends FormField
 
 		if($this->form) {
 			if(!$this->getSetting('script')) {
-				$this->setVar('script',urlencode(Director::baseURL().Director::makeRelative($this->Link('upload'))));		
-				// long script strings cause IO error on Apple/Mac Flash platforms\
-				// so parse out complextablefield
-				$script = urlencode(Director::baseURL().Director::makeRelative($this->Link('upload')));
-				if($pos = strpos($script,'%3Fctf')) {
+				// long flashvar strings cause IO error on Apple/Mac Flash platforms 
+				//  .. so parse out querystring (which may contain very long complex table field)
+				
+				$script = Director::baseURL().Director::makeRelative($this->Link('upload'));
+				if($pos = strpos($script,'?')) {
 					$script = substr($script,0,$pos);
 				}
 				$this->setVar('script',$script);				
