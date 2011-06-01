@@ -1,5 +1,5 @@
 <div class="field UploadifyField backend">
-	<div class="horizontal_tab_wrap">
+	<div class="horizontal_tab_wrap Uploadify">
 	  <div class="tabNavigation clearfix">
 		<label for="$id">$Title</label>
 	    <ul class="navigation">
