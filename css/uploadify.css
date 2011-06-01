@@ -83,7 +83,7 @@ div.tabNavigation ul.navigation li a.selected { background:#e9e9e9; color:#777; 
 .import_dropdown .middleColumn {border:0 !important;margin:0 !important;padding:0 !important;}
 .import_list {padding:10px 20px;border-top:1px solid #ccc;margin:10px 0;border-bottom: 1px solid #ccc;padding-bottom:6px;}
 .import_list.loading {background:url(../images/ajax-loader.gif) center no-repeat;}
-.import_list .li {margin:4px 0;border-bottom:1px solid #ccc;float:left;width:48%;height:4em;list-style:none;}
+.import_list li {margin:4px 0;border-bottom:1px solid #ccc;float:left;width:48%;height:4em;list-style:none;}
 .import_list .columns_1 li {float:none; width:auto;}
 .import_list .columns_1 li.odd {border-right:0;}
 .import_list .columns_1 li.even {padding-left:0;}
