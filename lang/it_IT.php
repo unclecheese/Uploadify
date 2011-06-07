@@ -19,5 +19,5 @@ $lang['it_IT']['Uploadify']['NOFILESFOUND'] = 'Non ci sono file in questa cartel
 $lang['it_IT']['Uploadify']['CHOOSEEXISTING'] = 'Scegli esistente';
 $lang['it_IT']['Uploadify']['UPLOADNEW'] = 'Carica nuovo';
 $lang['it_IT']['Uploadify']['DOIMPORT'] = 'Importa';
-$lang['da_DK']['Uploadify']['DETATCH'] = 'distaccare';
-$lang['da_DK']['Uploadify']['DELETEPERMANENTLY'] = 'eliminare in modo permanente';
+$lang['it_IT']['Uploadify']['DETATCH'] = 'distaccare';
+$lang['it_IT']['Uploadify']['DELETEPERMANENTLY'] = 'eliminare in modo permanente';
