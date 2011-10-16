@@ -506,8 +506,12 @@ abstract class UploadifyField extends FormField
 	 * @return DropdownField
 	 */
 	public function ImportDropdown() {
+		$id = null;
+		if($this->uploadFolder) {
+			$id = Folder::findOrMake($this->getUploadFolder())->ID;
+		}
 		$class = (class_exists("SimpleTreeDropdownField")) ? "SimpleTreeDropdownField" : "DropdownField";
-		$d = new $class("ImportFolderID_{$this->id()}", _t('Uploadify.CHOOSEIMPORTFOLDER','Choose a folder'), "Folder", null, "Filename");
+		$d = new $class("ImportFolderID_{$this->id()}", _t('Uploadify.CHOOSEIMPORTFOLDER','Choose a folder'), "Folder", $id, "Filename");
 		$d->setEmptyString('-- ' . _t('Uploadify.PLEASESELECT','Select a folder') . ' --');
 		$d->addExtraClass("{'url' : '".$this->Link('importlist')."' }");
 		return $d;
