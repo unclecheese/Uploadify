@@ -44,6 +44,7 @@ class S3MultipleImageUploadField extends MultipleFileUploadField
 
 	/**
 	 * Overload some settings to make sure the right script is used.
+	 * Force the object to accept only images.
 	 *
 	 * @return UploadifyField
 	 */	
@@ -57,6 +58,7 @@ class S3MultipleImageUploadField extends MultipleFileUploadField
 		if(!$this->Backend()) {
 			$this->template = "UploadifyField";
 		}
+		$this->imagesOnly();
 		return parent::FieldHolder();;
 	}
 	
@@ -88,13 +90,4 @@ class S3MultipleImageUploadField extends MultipleFileUploadField
 		$this->allowFolderSelection = false;
 	}
 	
-	/**
-	 * Force the object to accept only images.
-	 *
-	 * @return UploadifyField
-	 */	
-	public function FieldHolder() {
-		$this->imagesOnly();
-		return parent::FieldHolder();
-	}
 }

@@ -97,10 +97,6 @@ class S3Image extends S3File {
 		}
 	}
 	
-	/*function getURL() {
-	    return "http://{$this->getUploadBucket()}.s3.amazonaws.com/".$this->Filename ();
-	}*/
-	
 	/**
 	 * Return an XHTML img tag for this Image.
 	 * 
@@ -110,6 +106,13 @@ class S3Image extends S3File {
 		return $this->getTag();
 	}
 
+	/**
+	 * Given an array of filedata from the request, load up the meta data for the Image File
+	 * and send it off to S3
+	 *
+	 * @param array $filedata The file data from the request
+	 * @return boolean
+	 */
 	function loadUploadedImage($filedata) {
 		if(!is_array($filedata) || !isset($filedata['tmp_name'])) 
 			return false;
@@ -149,9 +152,7 @@ class S3Image extends S3File {
 	}
 	
 	public function SetSize($width, $height) {
-	    $img = $this->getFormattedImage('SetSize', $width, $height);
-	    Debug::show ($img);
-		return $img;
+	    return $this->getFormattedImage('SetSize', $width, $height);
 	}
 	
 	public function SetRatioSize($width, $height) {
@@ -280,7 +281,6 @@ class S3Image extends S3File {
 		$cacheFile = $this->cacheFilename($format, $arg1, $arg2);
 	
 		$gd = new GD($this->URL);
-		//Debug::show ('run2');
 		
 		if($gd->hasGD()){
 			$generateFunc = "generate$format";		
@@ -455,6 +455,10 @@ class S3Image_Cached extends S3Image {
 		
 	}
 	
+	/**
+	 * Get the URL of the cached S3Image
+	 * @return string
+	 */
 	public function getURL () {
 	    return $this->Filename;
 	}
