@@ -210,7 +210,7 @@ $(function() {
 				});	
 			}
 		});
-	});
+	}).change();
 	
 	$('.import_dropdown button').live("click", function() {
 		url = $(this).metadata().url;
