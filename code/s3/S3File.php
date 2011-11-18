@@ -14,10 +14,12 @@ class S3File extends DataObject {
 	static $db = array(
 		"Name" => "Varchar(255)",
 		"Bucket" => "Varchar(255)",
-		"URL" => "Varchar(255)"
+		"URL" => "Varchar(255)",
+		"Title" => "Varchar(255)"
 	);
 	
 	static $has_one = array(
+		"Parent" => "S3File",
 		"Owner" => "Member"
 	);
 	
@@ -178,7 +180,9 @@ class S3File extends DataObject {
 	public function Filename() {
 		return basename($this->URL);
 	}
-	
+
+
+
 	
 	/**
 	 * Return the URL of an icon for the file type. Borrowed from {@see File}
