@@ -308,10 +308,10 @@ abstract class UploadifyField extends FormField
 			$u = new Upload();
 			$u->loadIntoFile($_FILES['Filedata'], $file, $upload_folder);
 			$file->write();
-			echo $file->ID;
+			return $file->ID;
 		} 
 		else {
-			echo ' '; // return something or SWFUpload won't fire uploadSuccess
+			return ' '; // return something or SWFUpload won't fire uploadSuccess
 		}
 	}
 	
