@@ -308,6 +308,7 @@ abstract class UploadifyField extends FormField
 			$u = new Upload();
 			$u->loadIntoFile($_FILES['Filedata'], $file, $upload_folder);
 			$file->write();
+			if (method_exists($file, 'onAfterUpload')) $file->onAfterUpload();
 			echo $file->ID;
 		} 
 		else {
