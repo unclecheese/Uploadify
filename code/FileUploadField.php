@@ -124,6 +124,7 @@ class FileUploadField extends UploadifyField
 						$file->Thumb = $file->Icon();
 						$ret->push($file);
 					}
+					
 				}
 				return $ret;
 			}

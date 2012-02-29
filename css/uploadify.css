@@ -41,10 +41,10 @@ THE SOFTWARE.
                 .upload_previews ul li.uploadifyFile div.image {width:50px;float:left;}
 		.upload_previews ul li.uploadifyFile div.filename { padding-right:40px;height:32px;line-height:32px; }
 		.upload_previews ul li.uploadifyFile div.delete { position:absolute; top:10px; right:10px; width:160px; text-align:right; }
-			.upload_previews ul li.uploadifyFile div.delete a {text-transform:uppercase;background:#aaa;text-decoration:none;color:#fff;padding:4px;font-size:9px;}
-			.upload_previews ul li.uploadifyFile div.delete a.delete {background:rgba(255,0,0,1);}
-			.upload_previews ul li.uploadifyFile div.delete a:hover {background:#ccc;}
-			.upload_previews ul li.uploadifyFile div.delete a.delete:hover {background:rgba(255,0,0,.7);}
+			.upload_previews ul li.uploadifyFile div.delete a {text-transform:uppercase;text-decoration:none;color:#fff;font-size:1px;}
+			.upload_previews ul li.uploadifyFile div.delete a.delete {}
+			.upload_previews ul li.uploadifyFile div.delete a:hover {}
+			.upload_previews ul li.uploadifyFile div.delete a.delete:hover {}
 
 
 .backend .uploadifyfield_queue {max-height:150px;overflow:auto;}		
