@@ -372,7 +372,27 @@ abstract class UploadifyField extends FormField
 	public function importlist(SS_HTTPRequest $request) {
 		if($id = $request->requestVar('FolderID')) {
 			if(is_numeric($id)) {
-				$files = DataObject::get("File", "\"ParentID\" = $id AND \"File\".\"ClassName\" != 'Folder'");
+				
+				if($ext = $request->requestVar('FileExt')){
+					$ext = str_replace('*.','',$ext);
+					$ext_arr = explode(';', $ext);
+					$ext = ' AND (';
+					$x = 0;
+					foreach($ext_arr as $e){
+						if($x++ == 0){
+							$ext .= " Name LIKE '%.$e' ";	
+						} else {
+							$ext .= " OR Name LIKE '%.$e' ";
+						}
+					};
+					
+					$ext .= ')';
+					
+					$files = DataObject::get("File", "ParentID = $id AND ClassName != 'Folder'".$ext);					
+				} else {
+					$files = DataObject::get("File", "ParentID = $id AND ClassName != 'Folder'");
+				}
+				
 				return $this->customise(array(
 					'Files' => $files
 				))->renderWith('ImportList');

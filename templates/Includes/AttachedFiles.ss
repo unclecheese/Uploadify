@@ -8,10 +8,16 @@
 				<div class="filename">$Name</div>
 				<div class="delete">
 					<% if Top.Backend %>
-						<a class="remove" title="<% _t('Uploadify.REMOVE','Remove') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" href="<% control Top %>$Link(removefile)<% end_control %>"><% _t('Uploadify.DETACH','detach') %></a>&nbsp;
-						<% if Top.DeleteEnabled %><a class="delete" title="<% _t('Uploadify.REMOVEANDDELETE','Remove and delete') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove and delete') %>" href="<% control Top %>$Link(deletefile)<% end_control %>"><% _t('Uploadify.DELETEPERMANENTLY','delete permanently') %></a><% end_if %>
+						<a class="remove" title="<% _t('Uploadify.REMOVE','Remove') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" href="<% control Top %>$Link(removefile)<% end_control %>">							
+							<img src="uploadify/images/remove.png" height="16" width="16" alt="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" />
+						</a>&nbsp;
+						<% if Top.DeleteEnabled %><a class="delete" title="<% _t('Uploadify.REMOVEANDDELETE','Remove and delete') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove and delete') %>" href="<% control Top %>$Link(deletefile)<% end_control %>">
+							<img src="uploadify/images/delete.png" height="16" width="16" alt="<% _t('Uploadify.REMOVEANDDELETE','Remove and delete') %>" />
+						</a><% end_if %>
 					<% else %>
-						<a class="delete" title="<% _t('Uploadify.REMOVE','Remove') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" href="<% control Top %>$Link(removefile)<% end_control %>">delete permanently</a>
+						<a class="delete" title="<% _t('Uploadify.REMOVE','Remove') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" href="<% control Top %>$Link(removefile)<% end_control %>">
+							<img src="uploadify/images/remove.png" height="16" width="16" alt="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" />
+						</a>
 					<% end_if %>
 				</div>
 			</li>

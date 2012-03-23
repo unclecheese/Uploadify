@@ -32,6 +32,7 @@
 				<div class="import_dropdown">
 					<div class="import_message"></div>
 					$ImportDropdown
+					<input type="text" name="import_list_search_field" class="import_list_search_field" value="Type to search" onfocus="if(this.value == 'Type to search') { this.value = ''; }" onblur="if(this.value == '') { this.value = 'Type to search'; }"/>
 					<div class="import_list"></div>
 					<button type="submit" class="{'url' : '$Link(import)'}"><% _t('Uploadify.DOIMPORT','Import') %></button>					
 				</div>
