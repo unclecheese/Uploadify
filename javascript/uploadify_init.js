@@ -14,10 +14,10 @@ $(function() {
 			}
 			else {
 				$uploader = $('input.uploadify', $t);
-			}			
+			}
 			/**
 			 Build a set of options to pass to the uploadify object
-			 														**/			
+			 														**/
 			opts = $uploader.metadata();
 			$.extend(opts, {
 				onComplete: function(event, queueID, fileObj, response, data) {
@@ -29,7 +29,7 @@ $(function() {
 					$e = $(event.currentTarget);
 					if($e.metadata().refreshlink) {
 						$preview = $('#upload_preview_'+$e.attr('id'));
-						$inputs = $('.inputs input', $preview);			
+						$inputs = $('.inputs input', $preview);
 						if($preview.length) {
 							ids = new Array();
 							$inputs.each(function() {
@@ -38,7 +38,7 @@ $(function() {
 								}
 							});
 							ids.push(response);
-														
+
 							$.ajax({
 								url: $e.metadata().refreshlink,
 								data: {'FileIDs' : ids.join(",")},
@@ -84,16 +84,16 @@ $(function() {
 					$e = $(event.currentTarget);
 					if (data.fileCount == 0) {
 						$e.closest('.UploadifyField').find('.preview').show().html('<div class="no_files"></div>');
-						if (!$e.metadata().auto && !$e.metadata().upload_on_submit) { 
-							$('.uploadifyfield_queue_actions').show(); 
+						if (!$e.metadata().auto && !$e.metadata().upload_on_submit) {
+							$('.uploadifyfield_queue_actions').show();
 						}
 					}
 				}
 			});
-			
+
 			// Handle form submission if the upload happens on submit
 			if($uploader.metadata().upload_on_submit) {
-				$(this).parents('form:first').submit(function(e) {				
+				$(this).parents('form:first').submit(function(e) {
 					cansubmit = true;
 					$('input.uploadify').each(function() {
 						if($(this).data('active')) {
@@ -101,7 +101,7 @@ $(function() {
 							$(this).uploadifyUpload();
 						}
 					});
-					return cansubmit;						
+					return cansubmit;
 
 				});
 			}
@@ -114,35 +114,35 @@ $(function() {
 			var height = $fakeButton.outerHeight();
 			opts.width = width;
 			opts.height = height;
-			$buttonWrapper.css("width", width + "px").css("height", height + "px")			
-			
+			$buttonWrapper.css("width", width + "px").css("height", height + "px")
+
 			// Activate uploadify
 			// Tabs for the backend
 			if($t.find('.horizontal_tab_wrap').length) {
 		      $tabSet = $t.find('.horizontal_tab_wrap');
 		      var tabContainers = $('div.horizontal_tabs > div', $tabSet);
 		      tabContainers.hide().filter(':last').show();
-		      
-		      $('div.tabNavigation ul.navigation a', $tabSet).live("click",function () {		      
+
+		      $('div.tabNavigation ul.navigation a', $tabSet).live("click",function () {
 		          tabContainers.hide();
 		          tabContainers.filter(this.hash).show();
 		          $(this).parents('ul:first').find('.selected').removeClass('selected');
 		          $(this).addClass('selected');
 		          return false;
 		      });
-		      
-		      $('div.tabNavigation ul.navigation a:last', $tabSet).click();			
+
+		      $('div.tabNavigation ul.navigation a:last', $tabSet).click();
 			}
-			
-			
-						
+
+
+
 		});
 	});
-	
+
 	/**
 	 Attach behaviours external to the uploader, e.g. queue functions
 	 																	**/
-	
+
 	// Delete buttons for the queue items
 	$('.upload_previews li .delete a').live("click", function() {
 		$t = $(this);
@@ -159,7 +159,7 @@ $(function() {
 		return false;
 	});
 
-	
+
 	// Change folder ajax post
 	$('.folder_select').find(':submit').live("click", function() {
 		$t = $(this);
@@ -168,7 +168,7 @@ $(function() {
 		folder_id = $('select:first', $folderSelect).val();
 		new_folder = $('input:first', $folderSelect).val();
 		$folderSelect.parents('.folder_select_wrap').load(
-			$t.metadata().url, 
+			$t.metadata().url,
 			{ FolderID : folder_id, NewFolder : new_folder}
 		);
 		return false;
@@ -176,7 +176,7 @@ $(function() {
 	$('.folder_select :submit').livequery(function() {
 		$(this).siblings('label').hide();
 	});
-	
+
 	// Attach sorting, if multiple uploads
 	$('.upload_previews ul.sortable').livequery(function() {
 		var $list = $(this);
@@ -190,17 +190,18 @@ $(function() {
 		});
 	});
 
-	
+
 	$('.import_dropdown select').livequery("change", function() {
+
 		var uplField = $(this).parents('.UploadifyField').find('.uploadify').metadata();
-		var fileExt = uplField.fileExt; 		
-		$t = $(this);
-		$target = $t.parents('.import_dropdown').find('.import_list');
+		var fileExt = uplField.fileExt;
+		var $t = $(this);
+		var $target = $t.parents('.import_dropdown').find('.import_list');
 		$t.parents('.import_dropdown').find('button').hide();
 		$target.html('').addClass('loading').show().css('height','50px');
-		
+
 		var data = (fileExt != "*.*") ? { FolderID : $t.val(), 'FileExt' : fileExt } : {FolderID : $t.val()};
-		
+
 		$.ajax({
 			url : $t.metadata().url,
 			data : data,
@@ -211,16 +212,16 @@ $(function() {
 					if($('input', $(this)).length) {
 						$t.parents('.import_dropdown').find('button').show();
 					}
-					$(this).slideDown();		
-				});	
+					$(this).slideDown();
+				});
 			}
 		});
 	}).change();
-	
+
 	$('.import_dropdown button').live("click", function() {
 		url = $(this).metadata().url;
 		$target = $(this).parents('.UploadifyField').find('.preview');
-		$uploader = $(this).parents('.UploadifyField').find('.uploadify'); 
+		$uploader = $(this).parents('.UploadifyField').find('.uploadify');
 		$list = $(this).parents('.import_dropdown');
 		ids = new Array();
 		$target.find('input').each(function() {
@@ -245,7 +246,7 @@ $(function() {
 				$list.find('select').val('');
 				$list.find('button').hide();
 				$list.find('.import_list').slideUp();
-				
+
 			}
 		});
 		return false;
@@ -253,7 +254,7 @@ $(function() {
 
 	$('.import_list_search_field').live('keyup',function(){
 		var searchTxt = $(this).val().toLowerCase();
-		
+
 		$(this).parent().find('.import_list').find('li').each(function(x){
 			var v = $(this).find('label').text().toLowerCase();
 
@@ -264,6 +265,6 @@ $(function() {
 			}
 		});
 	});
-	
+
 });
 })(jQuery);
