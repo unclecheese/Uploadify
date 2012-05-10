@@ -64,18 +64,6 @@ class S3Image extends S3File {
 		
 		parent::defineMethods();
 	}
-	
-	/**
-	 * An image exists if it has a filename.
-	 * Does not do any filesystem checks.
-	 * 
-	 * @return boolean
-	 */
-	public function exists() {
-		if(isset($this->record["Filename"])) {
-			return true;
-		}		
-	}
 
 	/**
 	 * Return an XHTML img tag for this Image,
