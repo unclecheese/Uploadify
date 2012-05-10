@@ -108,6 +108,16 @@ class S3File extends DataObject {
 		$this->S3 = new S3(self::$access_key, self::$secret_key);
 	}
 	
+	/**
+	 * A File exists if it has ID and S3 URL
+	 * Does not do any filesystem checks.
+	 * 
+	 * @return boolean
+	 */
+	public function exists() {
+		return parent::exists() && $this->URL;
+	}
+	
 	
 	/**
 	 * Sets a custom upload bucket for this instance. Overrides {@see self::$default_bucket}
