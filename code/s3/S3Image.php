@@ -114,33 +114,7 @@ class S3Image extends S3File {
 	 * @return boolean
 	 */
 	function loadUploadedImage($filedata) {
-		if(!is_array($filedata) || !isset($filedata['tmp_name'])) 
-			return false;
-		
-		$fileTempName = $filedata['tmp_name'];
-		$fileName = $filedata['name'];
-		if(!$this->fileName) {
-			$fileName = ereg_replace(' +','-',trim($fileName));
-			$fileName = ereg_replace('[^A-Za-z0-9.+_\-]','',$fileName);
-			if(self::$unique_id) {
-				$ext = File::get_file_extension($fileName);
-				$base = basename($fileName,".{$ext}");
-				$this->Name = uniqid($base).".{$ext}";
-			}
-		}
-		else {
-			$this->Name = $this->fileName . "." . File::get_file_extension($fileName);
-		}
-
-		$bucket = $this->getUploadBucket();
-		$this->S3->putBucket($bucket, S3::ACL_PUBLIC_READ);
-
-		if ($this->S3->putObjectFile($fileTempName, $bucket, $this->Name, S3::ACL_PUBLIC_READ)) { 
-			$this->Bucket = $bucket;
-			$this->URL = "http://{$bucket}.s3.amazonaws.com/{$this->Name}";
-		}
-		
-		return false;
+		return $this->loadUploaded($filedata);
 	}
 	
 	public function SetWidth($width) {
