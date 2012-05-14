@@ -1,4 +1,5 @@
 <?php
+
 class S3Image extends S3File {
 	const ORIENTATION_SQUARE = 0;
 	const ORIENTATION_PORTRAIT = 1;
@@ -251,7 +252,8 @@ class S3Image extends S3File {
 				if($gd){
 
 					$bucket = $this->getUploadBucket();
-					$this->S3->putBucket($bucket, S3::ACL_PUBLIC_READ);
+					// TODO create bucket if it does not exist
+					// $this->S3->putBucket($bucket, S3::ACL_PUBLIC_READ);
 					$tempFile = tempnam (getTempFolder(), 's3images').File::get_file_extension ($cacheFile);
 					$gd->writeTo ($tempFile);
 					$this->S3->putObjectFile($tempFile, $bucket, '_resampled/'.basename ($cacheFile),
@@ -399,13 +401,13 @@ class S3Image extends S3File {
 class S3Image_Cached extends S3Image {
 	/**
 	 * Create a new cached image.
-	 * @param string $filename The filename of the image.
+	 * @param string $url The S3 URL of the image.
 	 * @param boolean $isSingleton This this to true if this is a singleton() object, a stub for calling methods.  Singletons
 	 * don't have their defaults set.
 	 */
-	public function __construct($filename = null, $isSingleton = false) {
+	public function __construct($url = null, $isSingleton = false) {
 		parent::__construct(array(), $isSingleton);
-		$this->Filename = $filename;
+		$this->URL = $url;
 	}
 	
 	public function getRelativePath() {
@@ -417,15 +419,7 @@ class S3Image_Cached extends S3Image {
 		
 	}
 	
-	/**
-	 * Get the URL of the cached S3Image
-	 * @return string
-	 */
-	public function getURL () {
-	    return $this->Filename;
-	}
-	
 	public function debug() {
-		return "S3Image_Cached object for $this->Filename";
+		return "S3Image_Cached object for $this->URL";
 	}
 }

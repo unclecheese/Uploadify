@@ -61,12 +61,6 @@ class S3File extends DataObject {
 	
 	
 	/**
-	 * @var string A custom filename
-	 */	
-	public $fileName = null;
-	
-	
-	/**
 	 * Set the two API keys needed to connect to S3
 	 *
 	 * @param string $access The access key
@@ -153,30 +147,25 @@ class S3File extends DataObject {
 	public function loadUploaded($filedata) {
 		if(!is_array($filedata) || !isset($filedata['tmp_name'])) 
 			return false;
-		
 		$fileTempName = $filedata['tmp_name'];
 		$fileName = $filedata['name'];
-		if(!$this->fileName) {
+		if(!$this->Name) {
 			$fileName = ereg_replace(' +','-',trim($fileName));
 			$fileName = ereg_replace('[^A-Za-z0-9.+_\-]','',$fileName);
-			if(self::$unique_id) {
-				$ext = File::get_file_extension($fileName);
-				$base = basename($fileName,".{$ext}");
-				$this->Name = uniqid($base).".{$ext}";
-			}
+			$ext = File::get_file_extension($fileName);
+			$this->Name = basename($fileName,".$ext");
+			if(self::$unique_id)
+				$this->Name .= uniqid('-');
+			$this->Name .= ".$ext";
 		}
-		else {
-			$this->Name = $this->fileName . "." . File::get_file_extension($fileName);
-		}
-
 		$bucket = $this->getUploadBucket();
-		$this->S3->putBucket($bucket, S3::ACL_PUBLIC_READ);
-
+		// TODO do a putBucket if it doesn't exist?
+		// $this->S3->putBucket($bucket, S3::ACL_PUBLIC_READ);
 		if ($this->S3->putObjectFile($fileTempName, $bucket, $this->Name, S3::ACL_PUBLIC_READ)) { 
 			$this->Bucket = $bucket;
 			$this->URL = "http://{$bucket}.s3.amazonaws.com/{$this->Name}";
+			return true;
 		}
-		
 		return false;
 	}
 	
@@ -187,11 +176,29 @@ class S3File extends DataObject {
 	 *
 	 * @return string
 	 */
-	public function Filename() {
+	public function getFilename() {
 		return basename($this->URL);
 	}
+	
+	/**
+	 * Getter for the "Filename" field. This is stored as a field for File, but here
+	 * it is done dynamically.
+	 *
+	 * @deprecated use S3File->getFilename() instead
+	 * @return string
+	 */
+	public function Filename() {
+		return $this->getFilename();
+	}
 
-
+	
+	/**
+	 * Get the URL of the cached S3Image
+	 * @return string
+	 */
+	public function getURL() {
+	    return isset($this->record['URL']) ? $this->record['URL'] : false;
+	}
 
 	
 	/**
