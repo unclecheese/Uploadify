@@ -1,5 +1,5 @@
 <?php
 
-if(isset($_POST['PHPSESSID'])) {
-	Session::start($_POST['PHPSESSID']);
+if(isset($_REQUEST['PHPSESSID'])) {
+	Session::start($_REQUEST['PHPSESSID']);
 }
