@@ -1,4 +1,5 @@
 <?php
+
 class S3Image extends S3File {
 	const ORIENTATION_SQUARE = 0;
 	const ORIENTATION_PORTRAIT = 1;
@@ -64,18 +65,6 @@ class S3Image extends S3File {
 		
 		parent::defineMethods();
 	}
-	
-	/**
-	 * An image exists if it has a filename.
-	 * Does not do any filesystem checks.
-	 * 
-	 * @return boolean
-	 */
-	public function exists() {
-		if(isset($this->record["Filename"])) {
-			return true;
-		}		
-	}
 
 	/**
 	 * Return an XHTML img tag for this Image,
@@ -114,33 +103,7 @@ class S3Image extends S3File {
 	 * @return boolean
 	 */
 	function loadUploadedImage($filedata) {
-		if(!is_array($filedata) || !isset($filedata['tmp_name'])) 
-			return false;
-		
-		$fileTempName = $filedata['tmp_name'];
-		$fileName = $filedata['name'];
-		if(!$this->fileName) {
-			$fileName = ereg_replace(' +','-',trim($fileName));
-			$fileName = ereg_replace('[^A-Za-z0-9.+_\-]','',$fileName);
-			if(self::$unique_id) {
-				$ext = File::get_file_extension($fileName);
-				$base = basename($fileName,".{$ext}");
-				$this->Name = uniqid($base).".{$ext}";
-			}
-		}
-		else {
-			$this->Name = $this->fileName . "." . File::get_file_extension($fileName);
-		}
-
-		$bucket = $this->getUploadBucket();
-		$this->S3->putBucket($bucket, S3::ACL_PUBLIC_READ);
-
-		if ($this->S3->putObjectFile($fileTempName, $bucket, $this->Name, S3::ACL_PUBLIC_READ)) { 
-			$this->Bucket = $bucket;
-			$this->URL = "http://{$bucket}.s3.amazonaws.com/{$this->Name}";
-		}
-		
-		return false;
+		return $this->loadUploaded($filedata);
 	}
 	
 	public function SetWidth($width) {
@@ -289,7 +252,8 @@ class S3Image extends S3File {
 				if($gd){
 
 					$bucket = $this->getUploadBucket();
-					$this->S3->putBucket($bucket, S3::ACL_PUBLIC_READ);
+					// TODO create bucket if it does not exist
+					// $this->S3->putBucket($bucket, S3::ACL_PUBLIC_READ);
 					$tempFile = tempnam (getTempFolder(), 's3images').File::get_file_extension ($cacheFile);
 					$gd->writeTo ($tempFile);
 					$this->S3->putObjectFile($tempFile, $bucket, '_resampled/'.basename ($cacheFile),
@@ -437,13 +401,13 @@ class S3Image extends S3File {
 class S3Image_Cached extends S3Image {
 	/**
 	 * Create a new cached image.
-	 * @param string $filename The filename of the image.
+	 * @param string $url The S3 URL of the image.
 	 * @param boolean $isSingleton This this to true if this is a singleton() object, a stub for calling methods.  Singletons
 	 * don't have their defaults set.
 	 */
-	public function __construct($filename = null, $isSingleton = false) {
+	public function __construct($url = null, $isSingleton = false) {
 		parent::__construct(array(), $isSingleton);
-		$this->Filename = $filename;
+		$this->URL = $url;
 	}
 	
 	public function getRelativePath() {
@@ -455,15 +419,7 @@ class S3Image_Cached extends S3Image {
 		
 	}
 	
-	/**
-	 * Get the URL of the cached S3Image
-	 * @return string
-	 */
-	public function getURL () {
-	    return $this->Filename;
-	}
-	
 	public function debug() {
-		return "S3Image_Cached object for $this->Filename";
+		return "S3Image_Cached object for $this->URL";
 	}
 }
