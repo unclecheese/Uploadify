@@ -297,7 +297,7 @@ abstract class UploadifyField extends FormField
 			$upload_folder = $this->getUploadFolder();
 			if($this->Backend()) {
 				if(isset($_REQUEST['FolderID'])) {
-					if($folder = DataObject::get_by_id("Folder", Convert::raw2sql($_REQUEST['FolderID']))) {
+					if($folder = Folder::get()->byID(Convert::raw2sql($_REQUEST['FolderID']))) {
 						$upload_folder = self::relative_asset_dir($folder->Filename);
 					}
 				}
@@ -329,7 +329,7 @@ abstract class UploadifyField extends FormField
 			return;
 		}
 		if($request->requestVar('FolderID') && is_numeric($request->requestVar('FolderID'))) {
-			if($folder = DataObject::get_by_id("Folder", Convert::raw2sql($request->requestVar('FolderID')))) {
+			if($folder = Folder::get()->byID(Convert::raw2sql($request->requestVar('FolderID')))) {
 				$upload_folder = $folder;
 				if($request->requestVar('NewFolder')) {
 					$new_name = trim($request->requestVar('NewFolder'),"/");
@@ -354,7 +354,7 @@ abstract class UploadifyField extends FormField
 		if(!Permission::check("CMS_ACCESS_CMSMain"))
 			return;
 		if(isset($_REQUEST['FileID']) && is_numeric($_REQUEST['FileID'])) {
-			if($file = DataObject::get_by_id($this->baseFileClass, $_REQUEST['FileID'])) {
+			if($file = DataList::create($this->baseFileClass)->byID($_REQUEST['FileID'])) {
 				if($file->canDelete()) {
 					$file->delete();
 				}
@@ -388,9 +388,9 @@ abstract class UploadifyField extends FormField
 					
 					$ext .= ')';
 					
-					$files = DataObject::get("File", "ParentID = $id AND ClassName != 'Folder'".$ext);					
+					$files = File::get()->where("ParentID = $id AND ClassName != 'Folder'".$ext);					
 				} else {
-					$files = DataObject::get("File", "ParentID = $id AND ClassName != 'Folder'");
+					$files = File::get()->where("ParentID = $id AND ClassName != 'Folder'");
 				}
 				
 				return $this->customise(array(
@@ -511,8 +511,8 @@ abstract class UploadifyField extends FormField
 			$d=new SimpleTreeDropdownField("UploadFolderID_{$this->id()}", '', "Folder", $id, "Filename");
 		}else{
 			
-			$folders=DataObject::get("Folder");
-			$d=new DropdownField("UploadFolderID_{$this->id()}", '', $folders->toDropDownMap("ID","Title"), $id);
+			$folders = Folder::get();
+			$d = new DropdownField("UploadFolderID_{$this->id()}", '', $folders->toDropDownMap("ID","Title"), $id);
 		}
 		$group = new FieldGroup(
 			$d,
@@ -540,7 +540,7 @@ abstract class UploadifyField extends FormField
 		if(class_exists("SimpleTreeDropdownField")){
 			$d=new SimpleTreeDropdownField("ImportFolderID_{$this->id()}", _t('Uploadify.CHOOSEIMPORTFOLDER','Choose a folder'), "Folder", $id, "Filename");
 		}else{
-			$folders=DataObject::get("Folder");
+			$folders = Folder::get();
 			$d=new DropdownField("ImportFolderID_{$this->id()}", _t('Uploadify.CHOOSEIMPORTFOLDER','Choose a folder'), $folders->toDropDownMap("ID","Title"));
 		}
 		$d->setEmptyString('-- ' . _t('Uploadify.PLEASESELECT','Select a folder') . ' --');
@@ -591,7 +591,7 @@ abstract class UploadifyField extends FormField
 				if($result instanceof File) {
 					return $result->Parent();
 				}
-				elseif($result instanceof DataObjectSet) {
+				elseif($result instanceof DataList) {
 					return $result->First()->Parent();
 				}
 			}

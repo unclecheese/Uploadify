@@ -59,7 +59,7 @@ class FileUploadField extends UploadifyField
 			$this->setValue($id);
 			$name = null;
 			if(is_numeric($id)) {
-				if($file = DataObject::get_by_id($this->baseFileClass, Convert::raw2sql($id))) {
+				if($file = DataList::create($this->baseFileClass)->byID(Convert::raw2sql($id))) {
 					$name = $file->Name;
 				}
 			}
@@ -103,15 +103,15 @@ class FileUploadField extends UploadifyField
 
 	/**
 	 * Gets all the attached files. This should only return one file, but we return
-	 * a {@link DataObjectSet} in order to maintain a single template
+	 * a {@link DataList} in order to maintain a single template
 	 *
-	 * @return DataObjectSet
+	 * @return DataList
 	 */
 	public function Files() {
 		if($val = $this->Value()) {
 			$class = $this->baseFileClass;
-			if($files = DataObject::get($class, "\"{$class}\".\"ID\" IN (".Convert::raw2sql($val).")")) {
-				$ret = new DataObjectSet();
+			if($files = DataList::create($class)->where("\"{$class}\".\"ID\" IN (".Convert::raw2sql($val).")")) {
+				$ret = new DataList();
 				foreach($files as $file) {
 					if(is_subclass_of($file->ClassName, "Image") || $file->ClassName == "Image") {
 						$image = ($file->ClassName != "Image") ? $file->newClassInstance("Image") : $file;
@@ -143,7 +143,7 @@ class FileUploadField extends UploadifyField
 		if(isset($_REQUEST[$this->name."ID"])) {
 			$file_id = (int) $_REQUEST[$this->name."ID"];
 			if($file_class = $record->has_one($this->name)) {
-				if($f = DataObject::get_by_id($this->baseFileClass, $file_id)) {
+				if($f = DataList::create($this->baseFileClass)->byID($file_id)) {
 					if($f->ClassName != $file_class) {
 						$file = $f->newClassInstance($file_class);
 						$file->write();

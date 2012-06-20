@@ -2,26 +2,26 @@
 <div class="upload_previews">
 	<% if Files %>
 	<ul class="<% if Sortable %>sortable {'url' : '$Link(dosort)'}<% end_if %>">
-		<% control Files %>
+		<% loop Files %>
 			<li id="file-{$ID}" class="uploadifyFile clr">
 				<div class="image"><img src="$Thumb" width="32" height="32" alt="$Thumb" /></div>
 				<div class="filename">$Name</div>
 				<div class="delete">
 					<% if Top.Backend %>
-						<a class="remove" title="<% _t('Uploadify.REMOVE','Remove') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" href="<% control Top %>$Link(removefile)<% end_control %>">							
+						<a class="remove" title="<% _t('Uploadify.REMOVE','Remove') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" href="<% with Top %>$Link(removefile)<% end_with %>">							
 							<img src="uploadify/images/remove.png" height="16" width="16" alt="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" />
 						</a>&nbsp;
-						<% if Top.DeleteEnabled %><a class="delete" title="<% _t('Uploadify.REMOVEANDDELETE','Remove and delete') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove and delete') %>" href="<% control Top %>$Link(deletefile)<% end_control %>">
+						<% if Top.DeleteEnabled %><a class="delete" title="<% _t('Uploadify.REMOVEANDDELETE','Remove and delete') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove and delete') %>" href="<% with Top %>$Link(deletefile)<% end_with %>">
 							<img src="uploadify/images/delete.png" height="16" width="16" alt="<% _t('Uploadify.REMOVEANDDELETE','Remove and delete') %>" />
 						</a><% end_if %>
 					<% else %>
-						<a class="delete" title="<% _t('Uploadify.REMOVE','Remove') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" href="<% control Top %>$Link(removefile)<% end_control %>">
+						<a class="delete" title="<% _t('Uploadify.REMOVE','Remove') %>" rel="$ID" title="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" href="<% with Top %>$Link(removefile)<% end_with %>">
 							<img src="uploadify/images/remove.png" height="16" width="16" alt="<% _t('Uploadify.REMOVEANDDELETE','Remove') %>" />
 						</a>
 					<% end_if %>
 				</div>
 			</li>
-		<% end_control %>
+		<% end_loop %>
 	</ul>
 	<% else %>
 	<div class="no_files">
@@ -36,8 +36,8 @@
 
 <div class="inputs">
 	<% if Files %>
-		<% control Files %>
+		<% loop Files %>
 			<input type="hidden" name="<% if Top.Multi %>{$Top.Name}[]<% else %>{$Top.Name}ID<% end_if %>" value="$ID" />
-		<% end_control %>
+		<% end_loop %>
 	<% end_if %>
 </div>

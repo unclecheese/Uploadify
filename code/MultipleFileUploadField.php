@@ -37,7 +37,7 @@ class MultipleFileUploadField extends UploadifyField
 			if(!$value && $data && $data instanceof DataObject && $data->hasMethod($this->name)) {
 				$funcName = $this->name;
 				if($obj = $data->$funcName()) {
-					if($obj instanceof DataObjectSet) {
+					if($obj instanceof DataList) {
 						$value = $obj->column('ID');
 					}
 				}
@@ -56,7 +56,7 @@ class MultipleFileUploadField extends UploadifyField
 			return;
 		if(isset($_REQUEST['file']) && is_array($_REQUEST['file'])) {
 	    	foreach($_REQUEST['file'] as $sort => $id) {
-	          $obj = DataObject::get_by_id("File", $id);
+	          $obj = File::get()->byID($id);
 	          $obj->SortOrder = $sort;
 	          $obj->write();
 	    	}
@@ -66,7 +66,7 @@ class MultipleFileUploadField extends UploadifyField
 	public function importlist(SS_HTTPRequest $request) {
 		if($id = $request->requestVar('FolderID')) {
 			if(is_numeric($id)) {
-				$files = DataObject::get("File", "\"ParentID\" = $id AND \"File\".\"ClassName\" != 'Folder'");
+				$files = File::get()->where("\"ParentID\" = $id AND \"File\".\"ClassName\" != 'Folder'");
 
 				if($ext = $request->requestVar('FileExt')){
 					$ext = str_replace('*.','',$ext);
@@ -83,9 +83,9 @@ class MultipleFileUploadField extends UploadifyField
 					
 					$ext .= ')';
 					
-					$files = DataObject::get("File", "ParentID = $id AND File.ClassName != 'Folder'".$ext);					
+					$files = File::get()->where("ParentID = $id AND File.ClassName != 'Folder'".$ext);					
 				} else {
-					$files = DataObject::get("File", "ParentID = $id AND File.ClassName != 'Folder'");
+					$files = File::get()->where("ParentID = $id AND File.ClassName != 'Folder'");
 				}
 				
 				if($files && $this->form) {
@@ -142,7 +142,7 @@ class MultipleFileUploadField extends UploadifyField
 			&& ($rec = $form->getRecord())
 			&& ($key = $this->getForeignRelationName($rec))
 			&& ($file_class = $this->getFileClass($rec))
-			&& ($file = DataObject::get_by_id($file_class, (int) $_REQUEST['FileID']))) {
+			&& ($file = DataList::create($file_class)->byID((int) $_REQUEST['FileID']))) {
 				
 				$currentComponentSet = $rec->{$this->name}();
 				$currentComponentSet->remove($file);
@@ -172,15 +172,15 @@ class MultipleFileUploadField extends UploadifyField
 	/**
 	 * Gets the list of attached files
 	 *
-	 * @return DataObjectSet
+	 * @return DataList
 	 */
 	public function Files() {
 		if($val = $this->Value()) {
 			if(is_array($val)) {
 				$list = implode(',', $val);
 				$class = $this->baseFileClass;
-				if($files = DataObject::get($class, "\"{$class}\".\"ID\" IN (".Convert::raw2sql($list).")")) {
-					$ret = new DataObjectSet();
+				if($files = DataList::create($class)->where("\"{$class}\".\"ID\" IN (".Convert::raw2sql($list).")")) {
+					$ret = new DataList();
 					foreach($files as $file) {
 						if(is_subclass_of($file->ClassName, "Image") || $file->ClassName == "Image") {
 							$image = ($file->ClassName != "Image") ? $file->newClassInstance("Image") : $file;
@@ -233,7 +233,7 @@ class MultipleFileUploadField extends UploadifyField
 				$currentComponentSet->removeAll();
 				// Assign all the new relations (may have already existed)
 				foreach($_REQUEST[$this->name] as $id) {
-					if($file = DataObject::get_by_id($this->baseFileClass, $id)) {
+					if($file = DataList::create($this->baseFileClass)->byID($id)) {
 						$new = ($file_class != $this->baseFileClass) ? $file->newClassInstance($file_class) : $file;
 						$new->write();
 						$currentComponentSet->add($new);

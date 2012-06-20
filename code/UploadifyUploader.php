@@ -6,7 +6,7 @@ class UploadifyUploader extends Controller {
 		if(isset($_FILES["Filedata"]) && is_uploaded_file($_FILES["Filedata"]["tmp_name"])) {
 			$upload_folder = urldecode($r->requestVar('uploadFolder'));
 			if(isset($_REQUEST['FolderID'])) {
-				if($folder = DataObject::get_by_id("Folder", Convert::raw2sql($_REQUEST['FolderID']))) {
+				if($folder = Folder::get()->byID(Convert::raw2sql($_REQUEST['FolderID']))) {
 					$upload_folder = UploadifyField::relative_asset_dir($folder->Filename);
 				}
 			}
