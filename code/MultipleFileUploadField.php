@@ -158,7 +158,7 @@ class MultipleFileUploadField extends UploadifyField
 	 *
 	 * @return UploadifyField
 	 */
-	public function FieldHolder() {
+	public function FieldHolder($attributes = array ()) {
 		$f = parent::FieldHolder();
 		if($this->Sortable()) {
 			Requirements::javascript('dataobject_manager/javascript/dom_jquery_ui.js');
@@ -180,7 +180,7 @@ class MultipleFileUploadField extends UploadifyField
 				$list = implode(',', $val);
 				$class = $this->baseFileClass;
 				if($files = DataList::create($class)->where("\"{$class}\".\"ID\" IN (".Convert::raw2sql($list).")")) {
-					$ret = new DataList();
+					$ret = new ArrayList();
 					foreach($files as $file) {
 						if(is_subclass_of($file->ClassName, "Image") || $file->ClassName == "Image") {
 							$image = ($file->ClassName != "Image") ? $file->newClassInstance("Image") : $file;
@@ -218,7 +218,7 @@ class MultipleFileUploadField extends UploadifyField
 	 *
 	 * @param DataObject $record The record being updated by the form
 	 */
-	public function saveInto(DataObject $record) {
+	public function saveInto(DataObjectInterface $record) {
 		// Can't do has_many without a parent id
 		if(!$record->isInDB()) {
 			$record->write();
@@ -230,9 +230,11 @@ class MultipleFileUploadField extends UploadifyField
 			if($relation_name = $this->getForeignRelationName($record)) {
 				// Null out all the existing relations and reset.
 				$currentComponentSet = $record->{$this->name}();
-				$currentComponentSet->removeAll();
+				foreach($currentComponentSet->column('ID') as $id) {
+					$currentComponentSet->removeByID($id);
+				}
 				// Assign all the new relations (may have already existed)
-				foreach($_REQUEST[$this->name] as $id) {
+				foreach($_REQUEST[$this->name] as $id) {					
 					if($file = DataList::create($this->baseFileClass)->byID($id)) {
 						$new = ($file_class != $this->baseFileClass) ? $file->newClassInstance($file_class) : $file;
 						$new->write();

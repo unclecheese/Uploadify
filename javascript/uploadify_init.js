@@ -44,7 +44,7 @@ $(function() {
 								data: {'FileIDs' : ids.join(",")},
 								async: false,
 								dataType: "json",
-								success: function(data) {
+								success: function(data) {									
 									$preview.html(data.html);
 								}
 							});
@@ -105,7 +105,13 @@ $(function() {
 
 				});
 			}
+
+			if(window.uploadifyOverride) {
+				$.extend(opts, window.uploadifyOverride);
+			}
+
 			$uploader.uploadify(opts);
+			
 
 			// Build the "fake" CSS button
 			var $buttonWrapper = $('.button_wrapper', $t);

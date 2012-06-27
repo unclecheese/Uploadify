@@ -12,7 +12,7 @@ class MultipleImageUploadField extends MultipleFileUploadField
 	 *
 	 * @return UploadifyField
 	 */	
-	public function FieldHolder() {
+	public function FieldHolder($attributes = array ()) {
 		$this->imagesOnly();
 		return parent::FieldHolder();
 	}

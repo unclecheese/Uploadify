@@ -24,7 +24,7 @@ class FileUploadField extends UploadifyField
 	 */
 	public function setValue($value = null, $data = null) {
 		if(!is_numeric($value)) {
-			if($id = Controller::curr()->getRequest()->requestVar($this->Name()."ID")) {
+			if($id = Controller::curr()->getRequest()->requestVar($this->getName()."ID")) {
 				$value = $id;
 			}
 			elseif(!$value && $data && $data instanceof DataObject && $data->hasMethod($this->name)) {
@@ -80,7 +80,7 @@ class FileUploadField extends UploadifyField
 	public function removefile() {
 		if($form = $this->form) {
 			if($rec = $form->getRecord()) {
-				$rec->{$this->Name().'ID'} = 0;
+				$rec->{$this->getName().'ID'} = 0;
 				$rec->write();
 				return;
 			}
@@ -111,7 +111,7 @@ class FileUploadField extends UploadifyField
 		if($val = $this->Value()) {
 			$class = $this->baseFileClass;
 			if($files = DataList::create($class)->where("\"{$class}\".\"ID\" IN (".Convert::raw2sql($val).")")) {
-				$ret = new DataList();
+				$ret = new ArrayList();
 				foreach($files as $file) {
 					if(is_subclass_of($file->ClassName, "Image") || $file->ClassName == "Image") {
 						$image = ($file->ClassName != "Image") ? $file->newClassInstance("Image") : $file;
@@ -139,7 +139,7 @@ class FileUploadField extends UploadifyField
 	 *
 	 * @param DataObject $record The record associated with the parent form
 	 */
-	public function saveInto(DataObject $record) {
+	public function saveInto(DataObjectInterface $record) {
 		if(isset($_REQUEST[$this->name."ID"])) {
 			$file_id = (int) $_REQUEST[$this->name."ID"];
 			if($file_class = $record->has_one($this->name)) {

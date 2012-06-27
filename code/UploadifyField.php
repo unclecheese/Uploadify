@@ -121,7 +121,7 @@ abstract class UploadifyField extends FormField
 	
 	/**
 	 * @var string The most fundamental type of File to retrieve. This is
-	 			   overridden by the S3 features, which use non-file objects
+	 *			   overridden by the S3 features, which use non-file objects
 	 */
 	public $baseFileClass = "File";
 
@@ -203,7 +203,7 @@ abstract class UploadifyField extends FormField
 	public function __construct($name, $title = null, $configuration = array(), $form = null) {
 		parent::__construct($name, $title, null, $form);
 		// A little hack to make things easier in the CMS
-		$controller = Director::urlParam('Controller');
+		$controller = $this->getRequest()->latestParam('Controller');
 		if(is_subclass_of($controller,"LeftAndMain") || is_subclass_of($controller,"ModelAdmin_CollectionController") || $controller == "ModelAdmin_CollectionController" || is_subclass_of($controller,"ModelAdmin_RecordController") || $controller == "ModelAdmin_RecordController") {
 			self::$backend = true;
 		}
@@ -211,7 +211,7 @@ abstract class UploadifyField extends FormField
 		$this->setVar('sizeLimit', self::convert_bytes(ini_get('upload_max_filesize')));
 		$this->setVar('buttonText', _t('Uploadify.BUTTONTEXT','Browse...'));
 		$this->addParam('PHPSESSID', session_id());	
-		$this->setVar('queueID', 'UploadifyFieldQueue_'.$this->Name());
+		$this->setVar('queueID', 'UploadifyFieldQueue_'.$this->getName());
 		if($this->Backend()) {
 			$this->template .= "Backend";
 		}
@@ -302,8 +302,10 @@ abstract class UploadifyField extends FormField
 					}
 				}
 			}
-			$ext = strtolower(end(explode('.', $_FILES['Filedata']['name'])));
+			$e = explode('.', $_FILES['Filedata']['name']);
+			$ext = strtolower(end($e));
 			$class = in_array($ext, self::$image_extensions) ? $this->getSetting('image_class') : $this->getSetting('file_class');
+
 			$file = new $class();
 			$u = new Upload();
 			$u->loadIntoFile($_FILES['Filedata'], $file, $upload_folder);
@@ -334,7 +336,7 @@ abstract class UploadifyField extends FormField
 				if($request->requestVar('NewFolder')) {
 					$new_name = trim($request->requestVar('NewFolder'),"/");
 					$clean_path = self::relative_asset_dir($upload_folder->Filename);
-					$new_folder = Folder::findOrMake($clean_path.$new_name);
+					$new_folder = Folder::find_or_make($clean_path.$new_name);
 					$upload_folder = $new_folder;
 				}
 				return $this->customise(array(
@@ -425,7 +427,7 @@ abstract class UploadifyField extends FormField
 	public function Metadata() {
 		$ret = array();
 		$vars = Object::combined_static(get_class($this), "defaults");		
-		foreach($vars as $setting => $value)
+		foreach(array_merge($vars,$this->configuration) as $setting => $value) 
 			$ret[] = "$setting : '".$this->getSetting($setting)."'";
 		$data = implode(",", $ret);
 		if(!empty($this->extraParams)) {
@@ -446,14 +448,14 @@ abstract class UploadifyField extends FormField
 	 *
 	 * @return UploadifyField
 	 */
-	public function FieldHolder() {
+	public function FieldHolder($attributes = array()) {
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("uploadify/javascript/swfobject.js");
 		Requirements::javascript("uploadify/javascript/uploadify.js");
 		Requirements::javascript(THIRDPARTY_DIR."/jquery-metadata/jquery.metadata.js");
 		Requirements::javascript(THIRDPARTY_DIR."/jquery-livequery/jquery.livequery.js");
 		Requirements::javascript("uploadify/javascript/uploadify_init.js");
-		Requirements::themedCSS("uploadify");
+		Requirements::css("uploadify/css/uploadify.css");
 
 		$this->Message = $this->XML_val('Message');
 		$this->MessageType = $this->XML_val('MessageType');
@@ -534,7 +536,7 @@ abstract class UploadifyField extends FormField
 	 */
 	public function ImportDropdown() {
 		$UploadFolder = $this->getUploadFolder();
-		$id = ($UploadFolder!="Uploads") ? Folder::findOrMake($UploadFolder)->ID : null;
+		$id = ($UploadFolder!="Uploads") ? Folder::find_or_make($UploadFolder)->ID : null;
 		$class = (class_exists("SimpleTreeDropdownField")) ? "SimpleTreeDropdownField" : "DropdownField";
 		$d = new $class("ImportFolderID_{$this->id()}", _t('Uploadify.CHOOSEIMPORTFOLDER','Choose a folder'), "Folder", $id, "Filename");
 		if(class_exists("SimpleTreeDropdownField")){
@@ -596,7 +598,7 @@ abstract class UploadifyField extends FormField
 				}
 			}
 		}
-		return Folder::findOrMake($this->getUploadFolder());
+		return Folder::find_or_make($this->getUploadFolder());
 	}
 	
 
