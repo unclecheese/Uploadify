@@ -122,7 +122,7 @@ class S3File extends DataObject {
 		$this->uploadBucket = $bucket;
 	}
 	
-	public function canDelete() {
+	public function canDelete($member = null) {
 		return Permission::check('CMS_ACCESS_CMSMain');
 	}
 	
