@@ -22,3 +22,4 @@ $lang['nl_NL']['Uploadify']['UPLOADNEW'] = 'Nieuwe afbeeldingen uploaden';
 $lang['nl_NL']['Uploadify']['PLEASESELECT'] = 'Selecteer';
 $lang['nl_NL']['Uploadify']['DETATCH'] = 'Ontkoppel';
 $lang['nl_NL']['Uploadify']['DELETEPERMANENTLY'] = 'Verwijder permanent';
+$lang['nl_NL']['Uploadify']['FILETYPENOTALLOWED'] = 'Bestandstype niet toegestaan!';

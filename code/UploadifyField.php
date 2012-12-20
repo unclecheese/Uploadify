@@ -305,8 +305,17 @@ abstract class UploadifyField extends FormField
 			$ext = strtolower(end(explode('.', $_FILES['Filedata']['name'])));
 			$class = in_array($ext, self::$image_extensions) ? $this->getSetting('image_class') : $this->getSetting('file_class');
 			$file = new $class();
+
+			// Perform check on allowed file extension, preventing upload of unallowed file types
 			$u = new Upload();
-			$u->loadIntoFile($_FILES['Filedata'], $file, $upload_folder);
+			$u->setValidator($validator = new Upload_Validator);
+			$validator->setAllowedExtensions(File::$allowed_extensions);
+			if($u->validate($_FILES['Filedata'])) {
+ 				$u->loadIntoFile($_FILES['Filedata'], $file, $upload_folder);
+			} else {
+       			return _t('Uploadify.FILETYPENOTALLOWED','File type not allowed!');
+			}
+			
 			$file->write();
 			if (method_exists($file, 'onAfterUpload')) $file->onAfterUpload();
 			echo $file->ID;
