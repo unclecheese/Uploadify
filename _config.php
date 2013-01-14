@@ -1,5 +1,5 @@
 <?php
 
-if(isset($_REQUEST['PHPSESSID'])) {
-	Session::start($_REQUEST['PHPSESSID']);
+if ($_SERVER['HTTP_USER_AGENT'] == 'Shockwave Flash' and isset($_POST['PHPSESSID'])) {
+	Session::start($_POST['PHPSESSID']);
 }
