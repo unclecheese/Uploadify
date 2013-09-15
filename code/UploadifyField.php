@@ -457,11 +457,11 @@ abstract class UploadifyField extends FormField
 	 */
 	public function FieldHolder() {
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-		Requirements::javascript("uploadify/javascript/swfobject.js");
-		Requirements::javascript("uploadify/javascript/uploadify.js");
+		Requirements::javascript(UPLOADIFY_DIR."/javascript/swfobject.js");
+		Requirements::javascript(UPLOADIFY_DIR."/javascript/uploadify.js");
 		Requirements::javascript(THIRDPARTY_DIR."/jquery-metadata/jquery.metadata.js");
 		Requirements::javascript(THIRDPARTY_DIR."/jquery-livequery/jquery.livequery.js");
-		Requirements::javascript("uploadify/javascript/uploadify_init.js");
+		Requirements::javascript(UPLOADIFY_DIR."/javascript/uploadify_init.js");
 		Requirements::themedCSS("uploadify");
 
 		$this->Message = $this->XML_val('Message');
@@ -496,10 +496,10 @@ abstract class UploadifyField extends FormField
 			}
 		}
 		if(!$this->getSetting('uploader')) {
-			$this->setVar('uploader',Director::baseURL().'uploadify/javascript/uploadify.swf');
+			$this->setVar('uploader',Director::baseURL().UPLOADIFY_DIR.'/javascript/uploadify.swf');
 		}
 		if(!$this->getSetting('cancelImg')) {
-			$this->setVar('cancelImg',Director::baseURL().'uploadify/images/cancel.png');
+			$this->setVar('cancelImg',Director::baseURL().UPLOADIFY_DIR.'/images/cancel.png');
 		}
 
 		return $this->renderWith($this->template);
@@ -636,6 +636,15 @@ abstract class UploadifyField extends FormField
 	 */
 	public function DebugMode() {
 		return self::$debug;
+	}
+
+	/**
+	 * Template accessor for the constant
+	 *
+	 * @return string
+	 */
+	public function UploadifyDir() {
+		return UPLOADIFY_DIR;
 	}
 	
 	
