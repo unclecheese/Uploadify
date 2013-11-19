@@ -110,7 +110,7 @@ class FileUploadField extends UploadifyField
 	public function Files() {
 		if($val = $this->Value()) {
 			$class = $this->baseFileClass;
-			if($files = DataObject::get($class, "\"{$class}\".\"ID\" IN (".Convert::raw2sql($val).")")) {
+			if($files = DataObject::get($class, "\"{$class}\".\"ID\" IN (".intval($val).")")) {
 				$ret = new DataObjectSet();
 				foreach($files as $file) {
 					if(is_subclass_of($file->ClassName, "Image") || $file->ClassName == "Image") {
